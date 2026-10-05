@@ -197,6 +197,44 @@ section[id]{scroll-margin-top:var(--header-h)}
 .site-foot .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px}
 .site-foot p{margin:0;color:var(--muted);font-size:14px;font-weight:600}
 
+/* ---------- customizer ---------- */
+.kit{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+.kit-preview{position:relative;display:flex;flex-direction:column;align-items:center;gap:16px;padding:24px;border-radius:24px;
+  border:1px solid var(--line);background:radial-gradient(420px 360px at 50% 55%,#1A2A6E 0%,transparent 70%),linear-gradient(180deg,var(--surface-2),var(--bg-2))}
+.kit-preview svg{width:min(100%,380px);height:auto;display:block}
+.seg-toggle{display:inline-flex;padding:4px;gap:4px;border-radius:14px;background:var(--bg-2);border:1px solid var(--line)}
+.seg-toggle button{font:600 13px/1 var(--f-display);color:var(--muted);background:transparent;border:1.5px solid transparent;border-radius:10px;padding:10px 14px;cursor:pointer}
+.seg-toggle button[aria-pressed="true"]{color:var(--accent);border-color:var(--accent);background:var(--accent-soft)}
+.kit-controls{display:flex;flex-direction:column;gap:20px;padding:26px;border-radius:24px;border:1px solid var(--line);background:linear-gradient(180deg,var(--surface-2),var(--surface));min-width:0}
+.field{display:flex;flex-direction:column;gap:8px}
+.field-label{display:flex;justify-content:space-between;gap:12px;font-size:14px;font-weight:700}
+.field-label small{font-size:12.5px;font-weight:600;color:var(--muted)}
+.field input[type="text"]{font:700 18px/1 var(--f-kit);letter-spacing:.08em;text-transform:uppercase;color:var(--ink);background:var(--bg-2);
+  border:1.5px solid var(--line);border-radius:14px;padding:15px 16px;width:100%;min-width:0}
+.field input[type="text"]:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.swatches{display:flex;flex-wrap:wrap;gap:10px}
+.swatches button{width:40px;height:40px;border-radius:50%;border:2px solid var(--line);cursor:pointer;background:var(--c)}
+.swatches button[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 3px var(--bg-2),0 0 0 5px var(--accent)}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 16px;border-radius:16px;background:var(--bg-2);border:1px solid var(--line)}
+.toggle-row b{display:block;font-size:15px}
+.toggle-row small{font-size:13px;color:var(--muted);font-weight:600}
+.switch{position:relative;flex:none;width:52px;height:30px}
+.switch input{position:absolute;opacity:0;width:100%;height:100%;margin:0;cursor:pointer}
+.switch span{position:absolute;inset:0;border-radius:99px;background:#2A3366;transition:background-color .2s;pointer-events:none}
+.switch span::after{content:"";position:absolute;top:4px;left:4px;width:22px;height:22px;border-radius:50%;background:var(--ink);transition:transform .2s}
+.switch input:checked+span{background:var(--teal)}
+.switch input:checked+span::after{transform:translateX(22px)}
+.switch input:focus-visible+span{outline:2px solid var(--accent);outline-offset:3px}
+.sizes{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+.sizes button{font:600 14px/1 var(--f-display);color:var(--ink);background:var(--bg-2);border:1.5px solid var(--line);border-radius:12px;padding:13px 0;cursor:pointer}
+.sizes button[aria-pressed="true"]{color:var(--accent);border-color:var(--accent);background:var(--accent-soft)}
+.kit-total{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;padding-top:18px;border-top:1px solid var(--line)}
+.kit-total small{display:block;font-size:13px;color:var(--muted);font-weight:600}
+.kit-total strong{font:700 24px/1.15 var(--f-display);letter-spacing:-.02em}
+.kit-note{margin:0;font-size:13.5px;color:var(--teal);font-weight:600;min-height:1.4em}
+@media (max-width:900px){.kit{grid-template-columns:1fr}}
+@media (max-width:420px){.sizes{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
 /* no-JS / blocked-CDN fallback */
 .no-gsap .story{height:auto}
 .no-gsap .story-pin{position:static;height:auto;padding-block:40px}
@@ -211,6 +249,7 @@ section[id]{scroll-margin-top:var(--header-h)}
     <nav class="nav" aria-label="Asosiy">
       <a class="link" href="#jarayon">Jarayon</a>
       <a class="link" href="#afzalliklar">Imkoniyatlar</a>
+      <a class="link" href="#konstruktor">Konstruktor</a>
       <a class="link" href="#qanday">Qanday ishlaydi</a>
       <a class="btn btn-accent btn-sm" href="#buyurtma">Buyurtma berish</a>
     </nav>
@@ -678,6 +717,107 @@ section[id]{scroll-margin-top:var(--header-h)}
     </div>
   </section>
 
+  <section class="section" id="konstruktor" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker">Konstruktor</span>
+        <h2>Formangni hoziroq sinab koʻr</h2>
+        <p>Ism va raqamni yozing, rangni tanlang — futbolka va shortik shu zahoti oʻzgaradi.</p>
+      </div>
+      <div class="kit">
+        <div class="kit-preview">
+          <div class="seg-toggle" role="group" aria-label="Koʻrinish">
+            <button type="button" id="kitViewFront" aria-pressed="true">Old tomon</button>
+            <button type="button" id="kitViewBack" aria-pressed="false">Orqa tomon</button>
+          </div>
+          <svg viewBox="0 0 400 480" role="img" aria-label="Futbolka va shortik namunasi">
+            <defs>
+              <clipPath id="kitShirtClip"><path d="M112,36 C128,58 172,58 188,36 L252,60 L304,128 L272,160 L252,138 L252,330 Q150,338 48,330 L48,138 L28,160 L-4,128 L48,60 Z"/></clipPath>
+              <clipPath id="kitShortsClip"><path d="M10,0 L190,0 L205,145 L125,145 L100,55 L75,145 L-5,145 Z"/></clipPath>
+            </defs>
+            <g transform="translate(68,-18) scale(0.88)">
+              <path class="kit-base" d="M112,36 C128,58 172,58 188,36 L252,60 L304,128 L272,160 L252,138 L252,330 Q150,338 48,330 L48,138 L28,160 L-4,128 L48,60 Z" fill="#FFFFFF"/>
+              <g clip-path="url(#kitShirtClip)">
+                <g class="kit-trim" fill="#0E1A3F">
+                  <rect x="48" y="138" width="18" height="210"/>
+                  <rect x="234" y="138" width="18" height="210"/>
+                  <path d="M-4,128 L28,160 L39,146 L7,114 Z"/>
+                  <path d="M304,128 L272,160 L261,146 L293,114 Z"/>
+                </g>
+                <path class="kit-trim-stroke" d="M112,36 C128,58 172,58 188,36" fill="none" stroke="#0E1A3F" stroke-width="16"/>
+                <path d="M68,138 V348 M232,138 V348" stroke="#F2A33A" stroke-width="3"/>
+              </g>
+              <path d="M112,36 C128,58 172,58 188,36 C176,62 124,62 112,36 Z" fill="#C9CFE0" stroke="#0A0F26" stroke-width="3"/>
+              <path d="M112,36 C128,58 172,58 188,36 L252,60 L304,128 L272,160 L252,138 L252,330 Q150,338 48,330 L48,138 L28,160 L-4,128 L48,60 Z" fill="none" stroke="#0A0F26" stroke-width="4" stroke-linejoin="round"/>
+              <g id="kitFront">
+                <use id="kitFrontF" href="#fMark" x="80" y="78" width="38" height="37" color="#0E1A3F"/>
+                <text id="kitChestNum" class="kit-ink" x="200" y="112" text-anchor="middle" font-family="Oswald, Impact, sans-serif" font-weight="700" font-size="32" fill="#0E1A3F">17</text>
+              </g>
+              <g id="kitBack" opacity="0">
+                <text id="kitBackName" class="kit-ink" x="150" y="128" text-anchor="middle" font-family="Oswald, Impact, sans-serif" font-weight="700" font-size="30" letter-spacing="3" fill="#0E1A3F">CHEMPION</text>
+                <text id="kitBackNum" class="kit-ink" x="150" y="268" text-anchor="middle" font-family="Oswald, Impact, sans-serif" font-weight="700" font-size="118" fill="#0E1A3F">17</text>
+              </g>
+            </g>
+            <g transform="translate(100,312)">
+              <path class="kit-base" d="M10,0 L190,0 L205,145 L125,145 L100,55 L75,145 L-5,145 Z" fill="#FFFFFF"/>
+              <g clip-path="url(#kitShortsClip)">
+                <g class="kit-trim" fill="#0E1A3F">
+                  <rect x="-10" y="-4" width="220" height="18"/>
+                  <path d="M10,14 L-5,150 L12,150 L26,14 Z"/>
+                  <path d="M190,14 L205,150 L188,150 L174,14 Z"/>
+                </g>
+                <path d="M-10,16 H210" stroke="#F2A33A" stroke-width="3"/>
+              </g>
+              <text id="kitShortsNum" class="kit-ink" x="44" y="122" text-anchor="middle" font-family="Oswald, Impact, sans-serif" font-weight="700" font-size="38" fill="#0E1A3F">17</text>
+              <path d="M10,0 L190,0 L205,145 L125,145 L100,55 L75,145 L-5,145 Z" fill="none" stroke="#0A0F26" stroke-width="3.5" stroke-linejoin="round"/>
+            </g>
+          </svg>
+        </div>
+
+        <form class="kit-controls" id="kitForm">
+          <div class="field">
+            <label class="field-label" for="kitName">Ism yoki matn <small>12 belgigacha</small></label>
+            <input type="text" id="kitName" value="CHEMPION" maxlength="12" autocomplete="off" spellcheck="false">
+          </div>
+          <div class="field">
+            <label class="field-label" for="kitNumber">Raqam <small>1 dan 99 gacha</small></label>
+            <input type="text" id="kitNumber" value="17" maxlength="2" inputmode="numeric" autocomplete="off">
+          </div>
+          <div class="field">
+            <span class="field-label">Forma rangi <small id="kitColorName">Oq</small></span>
+            <div class="swatches" id="kitColors" role="group" aria-label="Forma rangi">
+              <button type="button" style="--c:#FFFFFF" data-color="#FFFFFF" data-ink="#0E1A3F" data-trim="#0E1A3F" data-name="Oq" aria-label="Oq" aria-pressed="true"></button>
+              <button type="button" style="--c:#16245E" data-color="#16245E" data-ink="#F3F4F8" data-trim="#F2A33A" data-name="Toʻq koʻk" aria-label="Toʻq koʻk" aria-pressed="false"></button>
+              <button type="button" style="--c:#1FB5A0" data-color="#1FB5A0" data-ink="#0E1A3F" data-trim="#0E1A3F" data-name="Zumrad" aria-label="Zumrad" aria-pressed="false"></button>
+              <button type="button" style="--c:#C9383F" data-color="#C9383F" data-ink="#F6F7FB" data-trim="#F6F7FB" data-name="Qizil" aria-label="Qizil" aria-pressed="false"></button>
+              <button type="button" style="--c:#F2A33A" data-color="#F2A33A" data-ink="#0E1A3F" data-trim="#0E1A3F" data-name="Oltin" aria-label="Oltin" aria-pressed="false"></button>
+            </div>
+          </div>
+          <div class="toggle-row">
+            <div><b>Shortikka ham raqam</b><small>Chap oyoq, old tomonda</small></div>
+            <label class="switch"><input type="checkbox" id="kitShortsToggle" checked aria-label="Shortikka ham raqam"><span></span></label>
+          </div>
+          <div class="field">
+            <span class="field-label">Futbolka va shortik oʻlchami</span>
+            <div class="sizes" id="kitSizes" role="group" aria-label="Oʻlcham">
+              <button type="button" aria-pressed="false">S</button>
+              <button type="button" aria-pressed="false">M</button>
+              <button type="button" aria-pressed="true">L</button>
+              <button type="button" aria-pressed="false">XL</button>
+              <button type="button" aria-pressed="false">XXL</button>
+              <button type="button" aria-pressed="false">3XL</button>
+            </div>
+          </div>
+          <div class="kit-total">
+            <div><small>Futbolka + shortik</small><strong>189 000 soʻm</strong></div>
+            <button type="submit" class="btn btn-accent">Telegram orqali buyurtma</button>
+          </div>
+          <p class="kit-note" id="kitNote" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
   <section class="section" id="buyurtma" style="padding-top:0">
     <div class="wrap">
       <div class="cta">
@@ -722,6 +862,88 @@ section[id]{scroll-margin-top:var(--header-h)}
   const CONFIG = { telegram: "https://t.me/formo_uz" };
   document.documentElement.lang = "uz";
   document.querySelectorAll("[data-telegram]").forEach((a) => { a.href = CONFIG.telegram; });
+  initKit();
+
+  /* ---------- customizer ---------- */
+  function initKit() {
+    const form = document.getElementById("kitForm");
+    if (!form) return;
+    const nameIn = document.getElementById("kitName"), numIn = document.getElementById("kitNumber");
+    const backName = document.getElementById("kitBackName"), note = document.getElementById("kitNote");
+    const nums = ["kitChestNum", "kitBackNum", "kitShortsNum"].map((id) => document.getElementById(id));
+    const shortsNum = document.getElementById("kitShortsNum"), shortsToggle = document.getElementById("kitShortsToggle");
+    const front = document.getElementById("kitFront"), back = document.getElementById("kitBack");
+    const btnFront = document.getElementById("kitViewFront"), btnBack = document.getElementById("kitViewBack");
+    const state = { color: "Oq", size: "L" };
+
+    const press = (group, btn) => group.querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+    const nameValue = () => nameIn.value.trim().toUpperCase() || "CHEMPION";
+    const numValue = () => numIn.value || "17";
+
+    nameIn.addEventListener("input", () => {
+      const v = nameValue();
+      backName.textContent = v;
+      // long names are squeezed to fit across the back
+      if (v.length > 9) { backName.setAttribute("textLength", "196"); backName.setAttribute("lengthAdjust", "spacingAndGlyphs"); }
+      else { backName.removeAttribute("textLength"); backName.removeAttribute("lengthAdjust"); }
+    });
+    numIn.addEventListener("input", () => {
+      numIn.value = numIn.value.replace(/\D/g, "").slice(0, 2);
+      nums.forEach((t) => { t.textContent = numValue(); });
+    });
+
+    const colors = document.getElementById("kitColors");
+    colors.addEventListener("click", (e) => {
+      const b = e.target.closest("button");
+      if (!b) return;
+      press(colors, b);
+      state.color = b.dataset.name;
+      document.getElementById("kitColorName").textContent = b.dataset.name;
+      document.querySelectorAll(".kit-base").forEach((p) => p.setAttribute("fill", b.dataset.color));
+      document.querySelectorAll(".kit-ink").forEach((t) => t.setAttribute("fill", b.dataset.ink));
+      document.querySelectorAll(".kit-trim").forEach((g) => g.setAttribute("fill", b.dataset.trim));
+      document.querySelectorAll(".kit-trim-stroke").forEach((p) => p.setAttribute("stroke", b.dataset.trim));
+      document.getElementById("kitFrontF").setAttribute("color", b.dataset.ink);
+    });
+
+    const sizes = document.getElementById("kitSizes");
+    sizes.addEventListener("click", (e) => {
+      const b = e.target.closest("button");
+      if (!b) return;
+      press(sizes, b);
+      state.size = b.textContent.trim();
+    });
+
+    shortsToggle.addEventListener("change", () => { shortsNum.style.display = shortsToggle.checked ? "" : "none"; });
+
+    const showSide = (isBack) => {
+      front.setAttribute("opacity", isBack ? "0" : "1");
+      back.setAttribute("opacity", isBack ? "1" : "0");
+      btnFront.setAttribute("aria-pressed", String(!isBack));
+      btnBack.setAttribute("aria-pressed", String(isBack));
+    };
+    btnFront.addEventListener("click", () => showSide(false));
+    btnBack.addEventListener("click", () => showSide(true));
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const text = [
+        "Assalomu alaykum, FORMO! Forma buyurtma qilmoqchiman:",
+        `• Ism: ${nameValue()}`,
+        `• Raqam: ${numValue()}`,
+        `• Rang: ${state.color}`,
+        `• Oʻlcham: ${state.size}`,
+        `• Shortikka raqam: ${shortsToggle.checked ? "ha" : "yoʻq"}`,
+        "• Toʻplam: futbolka + shortik, 189 000 soʻm",
+      ].join("\n");
+      let copied = false;
+      try { await navigator.clipboard.writeText(text); copied = true; } catch (err) { /* clipboard unavailable */ }
+      note.textContent = copied
+        ? "Buyurtma matni nusxalandi — Telegramda chatga joylang va yuboring."
+        : "Telegramda shu maʼlumotlarni yozing: ism, raqam, rang va oʻlcham.";
+      window.open(CONFIG.telegram, "_blank", "noopener");
+    });
+  }
 
   if (!window.gsap || !window.ScrollTrigger) {
     document.documentElement.classList.add("no-gsap");
