@@ -111,6 +111,17 @@ section[id]{scroll-margin-top:var(--header-h)}
 .o{stroke:#0A0F26;stroke-width:4;stroke-linejoin:round;stroke-linecap:round}
 
 /* measuring tape progress */
+.tape-row{display:flex;gap:10px;align-items:stretch}
+.tape-row .tape{flex:1;min-width:0}
+.autoplay{flex:none;display:inline-flex;align-items:center;gap:8px;padding:0 16px;border-radius:14px;cursor:pointer;
+  font:600 13px/1 var(--f-display);color:var(--accent);background:var(--accent-soft);border:1.5px solid var(--accent);
+  box-shadow:0 0 22px -8px rgba(242,163,58,.6);transition:background-color .2s}
+.autoplay:hover{background:rgba(242,163,58,.2)}
+.autoplay svg{width:16px;height:16px;fill:currentColor}
+.autoplay .i-pause,.autoplay[aria-pressed="true"] .i-play{display:none}
+.autoplay[aria-pressed="true"] .i-pause{display:block}
+.no-gsap .autoplay{display:none}
+@media (max-width:860px){.autoplay{padding:0 12px}.autoplay span{display:none}}
 .tape{position:relative;display:flex;height:46px;background-color:var(--surface);color:rgba(150,165,255,.32);
   border:1px solid var(--line);border-radius:14px;overflow:hidden;
   background-image:repeating-linear-gradient(90deg,currentColor 0 1px,transparent 1px 10px),
@@ -666,7 +677,14 @@ section[id]{scroll-margin-top:var(--header-h)}
           </svg>
         </div>
       </div>
-      <div class="wrap"><nav class="tape" id="tape" aria-label="Bosqichlar"><span class="tape-marker" id="tapeMarker"></span></nav></div>
+      <div class="wrap tape-row">
+        <button type="button" class="autoplay" id="autoplay" aria-pressed="false" aria-label="Animatsiyani avtomatik koʻrsatish">
+          <svg class="i-play" viewBox="0 0 20 20" aria-hidden="true"><path d="M6 4.5v11l9-5.5z"/></svg>
+          <svg class="i-pause" viewBox="0 0 20 20" aria-hidden="true"><path d="M5.5 4.5h3v11h-3zM11.5 4.5h3v11h-3z"/></svg>
+          <span>Avto koʻrish</span>
+        </button>
+        <nav class="tape" id="tape" aria-label="Bosqichlar"><span class="tape-marker" id="tapeMarker"></span></nav>
+      </div>
     </div>
   </section>
 
@@ -1264,6 +1282,47 @@ section[id]{scroll-margin-top:var(--header-h)}
     }
   }
   syncTape();
+
+  /* ---------- autoplay: scrolls through the story on its own ---------- */
+  const AUTOPLAY_SECONDS = 40;
+  const autoBtn = $("#autoplay");
+  let playing = false, raf = 0, lastT = 0, pos = 0, startedAt = 0;
+  const setPlaying = (on) => {
+    playing = on;
+    autoBtn.setAttribute("aria-pressed", String(on));
+    autoBtn.setAttribute("aria-label", on ? "Avtomatik koʻrsatishni toʻxtatish" : "Animatsiyani avtomatik koʻrsatish");
+    autoBtn.querySelector("span").textContent = on ? "Pauza" : "Avto koʻrish";
+  };
+  const stopAuto = () => { if (!playing) return; cancelAnimationFrame(raf); setPlaying(false); };
+  const stepAuto = (t) => {
+    if (!playing) return;
+    const st = tl.scrollTrigger;
+    const dt = lastT ? Math.min(0.1, (t - lastT) / 1000) : 0;
+    lastT = t;
+    pos += ((st.end - st.start) / AUTOPLAY_SECONDS) * dt;
+    if (pos >= st.end) { window.scrollTo({ top: st.end, behavior: "instant" }); stopAuto(); return; }
+    window.scrollTo({ top: pos, behavior: "instant" });
+    raf = requestAnimationFrame(stepAuto);
+  };
+  const startAuto = () => {
+    const st = tl.scrollTrigger;
+    // start from the beginning unless the viewer is already inside the story
+    pos = window.scrollY >= st.start && window.scrollY < st.end - 4 ? window.scrollY : st.start;
+    window.scrollTo({ top: pos, behavior: "instant" });
+    lastT = 0;
+    startedAt = performance.now();
+    setPlaying(true);
+    raf = requestAnimationFrame(stepAuto);
+  };
+  autoBtn.addEventListener("click", () => (playing ? stopAuto() : startAuto()));
+  // any manual scrolling hands control back to the viewer
+  // (trackpad inertia keeps firing wheel events for a moment, so ignore them right after start)
+  const onManualScroll = () => { if (performance.now() - startedAt > 400) stopAuto(); };
+  ["wheel", "touchstart"].forEach((ev) => window.addEventListener(ev, onManualScroll, { passive: true }));
+  window.addEventListener("keydown", (e) => {
+    if (["ArrowDown", "ArrowUp", "PageDown", "PageUp", "Home", "End", " "].includes(e.key) && e.target !== autoBtn) stopAuto();
+  });
+  tape.addEventListener("click", stopAuto, true);
 
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => ScrollTrigger.refresh());
 })();
