@@ -2,7 +2,70 @@
 <html lang="uz">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Formo sport formalari</title>
+<title>Formo — oʻz sport formangni yarat | Futbolka va shortik</title>
+<meta name="description" content="Formo — sport formasini oʻzingiz yarating: ism, raqam, rang va logo. Futbolka va shortik komplekti 189 000 soʻmdan, 1–2 kunda tayyorlab, eshigingizgacha yetkazamiz.">
+<link rel="canonical" href="https://formo-v4.vercel.app/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#070B1E">
+<meta name="color-scheme" content="dark">
+<meta name="author" content="Formo">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Formo">
+<meta property="og:locale" content="uz_UZ">
+<meta property="og:url" content="https://formo-v4.vercel.app/">
+<meta property="og:title" content="Formo — oʻz sport formangni yarat">
+<meta property="og:description" content="Ism, raqam, rang va logo — hammasi sizning qoʻlingizda. Futbolka va shortik komplekti 189 000 soʻmdan.">
+<meta property="og:image" content="https://formo-v4.vercel.app/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Formo: CHEMPION 17 yozuvli futbolka va shortik, «Oʻz formangni yarat»">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Formo — oʻz sport formangni yarat">
+<meta name="twitter:description" content="Futbolka va shortik komplekti 189 000 soʻmdan. Ism, raqam va rangni oʻzingiz tanlaysiz.">
+<meta name="twitter:image" content="https://formo-v4.vercel.app/og.png">
+
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://formo-v4.vercel.app/#org",
+      "name": "Formo",
+      "url": "https://formo-v4.vercel.app/",
+      "logo": "https://formo-v4.vercel.app/icon-512.png",
+      "slogan": "Oʻz formangni yarat"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://formo-v4.vercel.app/#website",
+      "url": "https://formo-v4.vercel.app/",
+      "name": "Formo",
+      "inLanguage": "uz",
+      "publisher": { "@id": "https://formo-v4.vercel.app/#org" }
+    },
+    {
+      "@type": "Product",
+      "name": "Formo sport formasi: futbolka va shortik komplekti",
+      "description": "Ism, raqam, rang va logo bilan buyurtma asosida tayyorlanadigan futbolka va shortik komplekti. Oʻlchamlar S dan 3XL gacha.",
+      "image": "https://formo-v4.vercel.app/og.png",
+      "brand": { "@id": "https://formo-v4.vercel.app/#org" },
+      "offers": {
+        "@type": "Offer",
+        "price": "189000",
+        "priceCurrency": "UZS",
+        "url": "https://formo-v4.vercel.app/#konstruktor"
+      }
+    }
+  ]
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Oswald:wght@600;700&family=Unbounded:wght@500;600;700;800&display=swap">
@@ -50,9 +113,33 @@ section[id]{scroll-margin-top:var(--header-h)}
   background:rgba(7,11,30,.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
 .site-head .wrap{height:100%;display:flex;align-items:center;justify-content:space-between;gap:20px}
 .nav{display:flex;align-items:center;gap:28px}
+.nav-links{display:flex;align-items:center;gap:28px}
 .nav a.link{font-size:15px;font-weight:600;text-decoration:none;color:var(--muted);transition:color .2s}
 .nav a.link:hover{color:var(--ink)}
-@media (max-width:820px){.nav a.link{display:none}}
+.nav .nav-cta,.nav .burger{display:none}
+@media (max-width:820px){
+  .nav{gap:10px}
+  .nav .burger{display:inline-grid;place-content:center;gap:5px;width:44px;height:44px;flex:none;border-radius:12px;cursor:pointer;
+    border:1px solid var(--line);background:var(--surface)}
+  .burger span{display:block;width:20px;height:2px;border-radius:2px;background:var(--ink);transition:transform .25s ease,opacity .2s}
+  .burger[aria-expanded="true"]{border-color:var(--accent)}
+  .burger[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+  .burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+  .nav-links{position:fixed;left:0;right:0;top:calc(var(--header-h) + env(safe-area-inset-top,0px));z-index:49;
+    flex-direction:column;align-items:stretch;gap:0;padding:8px max(16px,4vw) 22px;
+    background:var(--bg);border-bottom:1px solid var(--line);
+    box-shadow:0 30px 60px -20px rgba(0,0,0,.8);
+    opacity:0;visibility:hidden;transform:translateY(-10px);transition:opacity .22s ease,transform .22s ease,visibility 0s linear .22s}
+  .nav-links.is-open{opacity:1;visibility:visible;transform:none;transition:opacity .22s ease,transform .22s ease,visibility 0s}
+  .nav a.link{font:600 19px/1.2 var(--f-display);color:var(--ink);padding:17px 2px;border-bottom:1px solid var(--line)}
+  .nav a.link:hover{color:var(--accent)}
+}
+@media (max-width:480px){
+  .nav .head-cta{display:none}
+  .nav .nav-cta{display:inline-flex;margin-top:18px}
+}
+@media (prefers-reduced-motion: reduce){.nav-links,.burger span{transition:none}}
 
 /* ---------- buttons (app style: amber outline) ---------- */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:.6em;font:600 15px/1 var(--f-display);letter-spacing:-.005em;
@@ -253,16 +340,23 @@ section[id]{scroll-margin-top:var(--header-h)}
 .no-gsap .cap{opacity:1!important;visibility:visible!important}
 .no-gsap .tape{display:none}
 </style>
+<noscript><style>.story{height:auto}.story-pin{position:static;height:auto;padding-block:40px}.caps{display:flex;flex-direction:column;gap:32px}.cap{opacity:1!important;visibility:visible!important}.tape-row{display:none}</style></noscript>
 
 <header class="site-head">
   <div class="wrap">
     <a class="logo" href="#top" aria-label="Formo — bosh sahifa"><svg viewBox="0 0 345 332" aria-hidden="true"><path d="M70,0 L310,0 L242,70 L70,70 L70,120 L250,120 L180,192 L70,192 L70,260 L0,332 L0,70 Z" style="fill:var(--ink)"/><path d="M310,0 L345,0 L277,70 L242,70 Z" style="fill:var(--sliver)"/></svg><span>FORMO</span></a>
     <nav class="nav" aria-label="Asosiy">
-      <a class="link" href="#jarayon">Jarayon</a>
-      <a class="link" href="#afzalliklar">Imkoniyatlar</a>
-      <a class="link" href="#konstruktor">Konstruktor</a>
-      <a class="link" href="#qanday">Qanday ishlaydi</a>
-      <a class="btn btn-accent btn-sm" href="#buyurtma">Buyurtma berish</a>
+      <div class="nav-links" id="navLinks">
+        <a class="link" href="#jarayon">Jarayon</a>
+        <a class="link" href="#afzalliklar">Imkoniyatlar</a>
+        <a class="link" href="#konstruktor">Konstruktor</a>
+        <a class="link" href="#qanday">Qanday ishlaydi</a>
+        <a class="btn btn-accent nav-cta" href="#buyurtma">Buyurtma berish</a>
+      </div>
+      <a class="btn btn-accent btn-sm head-cta" href="#buyurtma">Buyurtma berish</a>
+      <button type="button" class="burger" id="burger" aria-expanded="false" aria-controls="navLinks" aria-label="Menyuni ochish">
+        <span></span><span></span><span></span>
+      </button>
     </nav>
   </div>
 </header>
@@ -881,6 +975,26 @@ section[id]{scroll-margin-top:var(--header-h)}
   document.documentElement.lang = "uz";
   document.querySelectorAll("[data-telegram]").forEach((a) => { a.href = CONFIG.telegram; });
   initKit();
+  initBurger();
+
+  /* ---------- mobile burger menu ---------- */
+  function initBurger() {
+    const burger = document.getElementById("burger"), panel = document.getElementById("navLinks");
+    if (!burger || !panel) return;
+    const setOpen = (open, returnFocus) => {
+      panel.classList.toggle("is-open", open);
+      burger.setAttribute("aria-expanded", String(open));
+      burger.setAttribute("aria-label", open ? "Menyuni yopish" : "Menyuni ochish");
+      if (open) panel.querySelector("a").focus({ preventScroll: true });
+      else if (returnFocus) burger.focus({ preventScroll: true });
+    };
+    const isOpen = () => panel.classList.contains("is-open");
+    burger.addEventListener("click", () => setOpen(!isOpen()));
+    panel.addEventListener("click", (e) => { if (e.target.closest("a")) setOpen(false); });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape" && isOpen()) setOpen(false, true); });
+    document.addEventListener("click", (e) => { if (isOpen() && !panel.contains(e.target) && !burger.contains(e.target)) setOpen(false); });
+    matchMedia("(min-width: 821px)").addEventListener("change", (e) => { if (e.matches) setOpen(false); });
+  }
 
   /* ---------- customizer ---------- */
   function initKit() {
