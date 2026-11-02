@@ -22,8 +22,6 @@ export const KIT_COLORS = [
 // Qo'shimcha rang: yoqa, yenglar va naqsh shu rangda bo'ladi (`kit.trims` bilan indeks bo'yicha)
 export const TRIM_COLORS = ["#0E1A3F", "#F2A33A", "#F6F7FB", "#C9383F", "#1FB5A0"];
 
-export const PATTERN_IDS = ["none", "fade"];
-
 export const SIZES = ["S", "M", "L", "XL", "XXL", "3XL"];
 
 // Tayyor namunalar: raqam va rang indeksi (nomlari `kit.presets` da)
