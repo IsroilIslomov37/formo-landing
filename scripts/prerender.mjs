@@ -36,7 +36,12 @@ function fontPreloads(lang) {
 
 function jsonLd(lang) {
   const t = DICT[lang].meta;
-  const org = { "@type": "Organization", "@id": `${SITE_URL}/#org`, name: "Formo", url: SITE_URL + "/", logo: `${SITE_URL}/icon-512.png`, sameAs: [TELEGRAM_URL] };
+  const org = {
+    "@type": "Organization", "@id": `${SITE_URL}/#org`, name: "Formo", url: SITE_URL + "/",
+    logo: { "@type": "ImageObject", url: `${SITE_URL}/icon-512.png`, width: 512, height: 512 },
+    image: OG_IMAGE, sameAs: [TELEGRAM_URL],
+    contactPoint: { "@type": "ContactPoint", contactType: "customer support", url: TELEGRAM_URL, availableLanguage: LANGS },
+  };
   return {
     "@context": "https://schema.org",
     "@graph": [
@@ -44,12 +49,14 @@ function jsonLd(lang) {
       { "@type": "WebSite", "@id": `${SITE_URL}/#website`, url: SITE_URL + "/", name: "Formo", inLanguage: LANGS, publisher: { "@id": org["@id"] } },
       {
         "@type": "WebPage", "@id": `${url(lang)}#page`, url: url(lang), name: t.title, description: t.description,
-        inLanguage: lang, isPartOf: { "@id": `${SITE_URL}/#website` }, primaryImageOfPage: { "@type": "ImageObject", url: OG_IMAGE, width: 1200, height: 630 },
+        inLanguage: lang, isPartOf: { "@id": `${SITE_URL}/#website` }, about: { "@id": `${url(lang)}#service` }, dateModified: new Date().toISOString().slice(0, 10), primaryImageOfPage: { "@type": "ImageObject", url: OG_IMAGE, width: 1200, height: 630 },
       },
       {
         "@type": "Service", "@id": `${url(lang)}#service`, name: t.service, serviceType: t.service, description: t.description,
         provider: { "@id": org["@id"] }, areaServed: { "@type": "Country", name: "Uzbekistan" }, inLanguage: lang,
         availableChannel: { "@type": "ServiceChannel", serviceUrl: TELEGRAM_URL },
+        image: OG_IMAGE, category: "Custom sportswear",
+        hasOfferCatalog: { "@type": "OfferCatalog", name: t.service, itemListElement: ["T-shirt", "Shorts"].map((n) => ({ "@type": "Offer", itemOffered: { "@type": "Product", name: n, brand: { "@type": "Brand", name: "Formo" } } })) },
       },
     ],
   };
@@ -61,6 +68,8 @@ function seoBlock(lang) {
   return [
     `<title>${esc(t.title)}</title>`,
     meta("name", "description", t.description),
+    meta("name", "keywords", t.keywords),
+    meta("http-equiv", "content-language", lang),
     `<link rel="canonical" href="${url(lang)}">`,
     ...LANGS.map((l) => `<link rel="alternate" hreflang="${l}" href="${url(l)}">`),
     `<link rel="alternate" hreflang="x-default" href="${url("uz")}">`,
@@ -72,6 +81,7 @@ function seoBlock(lang) {
     meta("property", "og:title", t.title),
     meta("property", "og:description", t.description),
     meta("property", "og:image", OG_IMAGE),
+    meta("property", "og:image:secure_url", OG_IMAGE),
     meta("property", "og:image:type", "image/png"),
     meta("property", "og:image:width", "1200"),
     meta("property", "og:image:height", "630"),
@@ -100,11 +110,12 @@ for (const lang of LANGS) {
 
 const today = new Date().toISOString().slice(0, 10);
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 ${LANGS.map((l) => `  <url>
     <loc>${url(l)}</loc>
     <lastmod>${today}</lastmod>
     <changefreq>weekly</changefreq>
+    <image:image><image:loc>${OG_IMAGE}</image:loc></image:image>
     <priority>${l === "uz" ? "1.0" : "0.9"}</priority>
 ${LANGS.map((o) => `    <xhtml:link rel="alternate" hreflang="${o}" href="${url(o)}"/>`).join("\n")}
     <xhtml:link rel="alternate" hreflang="x-default" href="${url("uz")}"/>
@@ -112,5 +123,7 @@ ${LANGS.map((o) => `    <xhtml:link rel="alternate" hreflang="${o}" href="${url(
 </urlset>
 `;
 fs.writeFileSync(path.join(dist, "sitemap.xml"), sitemap);
+// 404: qidiruv tizimi noindex ko'radi, foydalanuvchi bosh sahifaga qaytadi
+fs.writeFileSync(path.join(dist, "404.html"), `<!doctype html><html lang="uz"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>404 — Formo</title><style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#070B1E;color:#F3F4F8;font-family:system-ui,sans-serif;text-align:center}a{color:#F2A33A;font-weight:700}</style></head><body><main><h1>404</h1><p><a href="/">Formo</a></p></main></body></html>`);
 fs.writeFileSync(path.join(dist, "robots.txt"), `User-agent: *\nAllow: /\n\nSitemap: ${SITE_URL}/sitemap.xml\n`);
 console.log("sitemap.xml, robots.txt written for", SITE_URL);
