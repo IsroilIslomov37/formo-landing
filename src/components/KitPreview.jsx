@@ -4,18 +4,23 @@ const FONT = "'Oswald Variable', Impact, sans-serif";
 
 // Futbolka va shortik. `back` — orqa tomon ko'rsatiladimi.
 // Old tomondagi F belgisi #fMark symbol'iga tayanadi (u hikoya sahnasida e'lon qilingan).
-export default function KitPreview({ label, color, ink, trim, logo, name, number, shortsNumber, back }) {
+export default function KitPreview({ label, color, ink, trim, pattern, logo, name, number, shortsNumber, back }) {
   const longName = name.length > 9;
   return (
     <svg className="w-[min(100%,380px)] max-[900px]:w-[min(100%,300px)] max-[480px]:w-[min(100%,250px)] h-auto block" viewBox="0 0 400 480" role="img" aria-label={label}>
       <defs>
         <clipPath id="kitShirtClip"><path d={SHIRT} /></clipPath>
         <clipPath id="kitShortsClip"><path d={SHORTS} /></clipPath>
+        <linearGradient id="kitFade" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor={trim} stopOpacity="0" />
+          <stop offset="1" stopColor={trim} stopOpacity=".95" />
+        </linearGradient>
       </defs>
 
       <g transform="translate(68,-18) scale(0.88)">
         <path d={SHIRT} fill={color} className="transition-[fill] duration-300" />
         <g clipPath="url(#kitShirtClip)">
+          {pattern === "fade" && <rect x="-10" y="210" width="330" height="140" fill="url(#kitFade)" />}
           <g fill={trim} className="transition-[fill] duration-300">
             <rect x="48" y="138" width="18" height="210" />
             <rect x="234" y="138" width="18" height="210" />

@@ -80,8 +80,7 @@
 
 /* Hero futbolkasi sichqoncha ostida ko'tariladi (animatsiya .fan da, shuning uchun alohida guruh) */
 .jersey-hover { transition: transform .35s cubic-bezier(.2, 1.4, .4, 1); }
-.jersey-hover:hover { transform: translateY(-18px) scale(1.04); }
-.jersey-hover { transform-box: fill-box; transform-origin: center bottom; }
+.jersey-hover:hover { transform: translateY(-14px); }
 
 /* Raqam o'zgarganda kichik "pop" */
 .kit-pop { transform-box: fill-box; transform-origin: center; animation: pop .35s cubic-bezier(.2, 1.6, .4, 1); }

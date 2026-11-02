@@ -3,7 +3,7 @@ import KitPreview from "./KitPreview.jsx";
 import Tilt from "./Tilt.jsx";
 import Reveal from "./Reveal.jsx";
 import { useLang } from "../i18n.jsx";
-import { KIT_COLORS, TRIM_COLORS, PRESETS, SIZES, TELEGRAM } from "../data.js";
+import { KIT_COLORS, TRIM_COLORS, PATTERN_IDS, PRESETS, SIZES, TELEGRAM } from "../data.js";
 import { wrap, section, btnAccent, SecHead } from "../ui.jsx";
 
 const pressed = "aria-pressed:text-accent aria-pressed:border-accent aria-pressed:bg-accent/10";
@@ -50,6 +50,7 @@ export default function Kit() {
   const [number, setNumber] = useState("17");
   const [colorIdx, setColorIdx] = useState(0);
   const [trim, setTrim] = useState(KIT_COLORS[0].trim);
+  const [pattern, setPattern] = useState("none");
   const [logo, setLogo] = useState(true);
   const [size, setSize] = useState("L");
   const [shortsNumber, setShortsNumber] = useState(true);
@@ -69,6 +70,7 @@ export default function Kit() {
   const shownNumber = number || "17";
   const colorName = K.colors[colorIdx];
   const trimName = K.trims[TRIM_COLORS.indexOf(trim)] ?? "—";
+  const patternName = K.patterns[pattern];
 
   // asosiy rang almashsa, qo'shimcha rang ham unga mosi bilan almashadi
   function chooseColor(i) {
@@ -86,12 +88,13 @@ export default function Kit() {
     const i = Math.floor(Math.random() * KIT_COLORS.length);
     chooseColor(i);
     setTrim(pick(TRIM_COLORS.filter((h) => h !== KIT_COLORS[i].color)));
+    setPattern(pick(PATTERN_IDS));
   }
 
   async function submit(e) {
     e.preventDefault();
     const text = K.message({
-      name: shownName, number: shownNumber, color: colorName, trim: trimName,
+      name: shownName, number: shownNumber, color: colorName, trim: trimName, pattern: patternName,
       logo: logo ? K.yes : K.no, size, shorts: shortsNumber ? K.yes : K.no,
     });
 
@@ -121,7 +124,7 @@ export default function Kit() {
             <Tilt max={7} className="w-full flex justify-center">
               <KitPreview
                 label={K.previewAria}
-                color={color.color} ink={color.ink} trim={trim} logo={logo}
+                color={color.color} ink={color.ink} trim={trim} pattern={pattern} logo={logo}
                 name={shownName} number={shownNumber} shortsNumber={shortsNumber} back={back}
               />
             </Tilt>
@@ -192,6 +195,13 @@ export default function Kit() {
 
               {tab === "pattern" && (
                 <>
+                  <Field label={K.patternLabel} hint={patternName}>
+                    <div className="grid grid-cols-2 gap-2" role="group" aria-label={K.patternLabel}>
+                      {PATTERN_IDS.map((id) => (
+                        <button key={id} type="button" className={optBtn} aria-pressed={id === pattern} onClick={() => setPattern(id)}>{K.patterns[id]}</button>
+                      ))}
+                    </div>
+                  </Field>
                   <div className={rowCls}>
                     <div><b className="block text-[15px]">{K.logoTitle}</b><small className="text-[13px] text-muted font-semibold">{K.logoSub}</small></div>
                     <Switch checked={logo} onChange={(v) => { setLogo(v); setBack(false); }} label={K.logoTitle} />
